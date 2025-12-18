@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: ai-service
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port:
+    8083
+
+eureka:
+  instance:
+    preferIpAddress: false
+    hostname: ai-service
+    instance-id: ${spring.application.name}:${server.port}
+
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+
+  data:
+    mongodb:
+      uri: mongodb://root:root@mongodb:27017/fitnessreccomendation?authSource=admin
+      databases: fitnessreccomendation
+
+
+rabbitmq:
+  exchange:
+    name: fitness.exchange
+  queue:
+    name: activity.queue
+  routing:
+    key: activity.tracking
+
+gemini:
+  api:
+    url: ${GEMINI_API_URL}
+    key: ${GEMINI_API_KEY}
