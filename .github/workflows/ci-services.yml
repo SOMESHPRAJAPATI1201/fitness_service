@@ -7,9 +7,11 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  build-service-a:
-    name: Build Eureka Server
+  # ---------------- LINT (OPTIONAL) ----------------
+  lint-all-services:
+    name: Lint All Services (Optional)
     runs-on: ubuntu-latest
+    continue-on-error: true   # 👈 does NOT block merge
 
     steps:
       - uses: actions/checkout@v4
@@ -21,8 +23,42 @@ jobs:
           java-version: 21
           cache: maven
 
-      - name: Build Service A
+      - name: Lint Eureka
         run: |
+          cd eureka
+          mvn -q checkstyle:check || true
+
+      - name: Lint User Service
+        run: |
+          cd userservices
+          mvn -q checkstyle:check || true
+
+      - name: Lint Activity Service
+        run: |
+          cd activityservice
+          mvn -q checkstyle:check || true
+
+      - name: Lint AI Service
+        run: |
+          cd aiservice
+          mvn -q checkstyle:check || true
+
+
+  # ---------------- BUILD SEQUENCE ----------------
+  build-service-a:
+    name: Build Eureka Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - run: |
           cd eureka
           mvn clean package -DskipTests=true
 
@@ -35,17 +71,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
           cache: maven
 
-      - name: Build Service B
-        run: |
+      - run: |
           cd userservices
           mvn clean package -DskipTests=true
+
 
   build-service-c:
     name: Build Activity Service
@@ -55,34 +90,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
           cache: maven
 
-      - name: Build Service C
-        run: |
+      - run: |
           cd activityservice
           mvn clean package -DskipTests=true
 
+
   build-service-d:
-    name: Build Ai Service
+    name: Build AI Service
     runs-on: ubuntu-latest
     needs: build-service-c
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
           cache: maven
 
-      - name: Build Service D
-        run: |
+      - run: |
           cd aiservice
           mvn clean package -DskipTests=true
