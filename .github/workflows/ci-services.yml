@@ -1,0 +1,88 @@
+name: Java Services CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-service-a:
+    name: Build Service A
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Build Service A
+        run: |
+          cd eureka
+          mvn clean package -DskipTests=true
+
+
+  build-service-b:
+    name: Build Service B
+    runs-on: ubuntu-latest
+    needs: build-service-a
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Build Service B
+        run: |
+          cd userservices
+          mvn clean package -DskipTests=true
+
+  build-service-c:
+    name: Build Service C
+    runs-on: ubuntu-latest
+    needs: build-service-b
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Build Service C
+        run: |
+          cd activityservice
+          mvn clean package -DskipTests=true
+
+  build-service-d:
+    name: Build Service D
+    runs-on: ubuntu-latest
+    needs: build-service-c
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Build Service D
+        run: |
+          cd aiservice
+          mvn clean package -DskipTests=true
