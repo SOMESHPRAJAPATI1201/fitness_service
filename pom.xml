@@ -7,7 +7,7 @@
 
     <modules>
         <module>eureka</module>
-        <module>userservice</module>
+        <module>userservices</module>
         <module>activityservice</module>
         <module>aiservice</module>
     </modules>
