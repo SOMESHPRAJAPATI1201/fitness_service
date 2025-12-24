@@ -10,4 +10,9 @@ class ActivityserviceApplicationTests {
 	void contextLoads() {
 	}
 
+    @Test
+    void mainMethodRuns() {
+        ActivityserviceApplication.main(new String[]{});
+    }
+
 }

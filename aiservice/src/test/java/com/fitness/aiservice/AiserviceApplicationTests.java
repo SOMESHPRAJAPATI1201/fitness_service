@@ -10,4 +10,9 @@ class AiserviceApplicationTests {
 	void contextLoads() {
 	}
 
+    @Test
+    void mainMethodRuns() {
+        AiserviceApplication.main(new String[]{});
+    }
+
 }
