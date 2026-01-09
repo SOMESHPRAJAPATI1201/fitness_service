@@ -1,0 +1,14 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fitness</groupId>
+    <artifactId>fitness-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>eureka</module>
+        <module>userservices</module>
+        <module>activityservice</module>
+        <module>aiservice</module>
+    </modules>
+</project>
