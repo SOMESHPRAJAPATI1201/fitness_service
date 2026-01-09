@@ -15,11 +15,11 @@ spec:
     tty: true
     resources:
       requests:
-        cpu: 1
-        memory: .5Gi
-      limits:
         cpu: 2
         memory: 1Gi
+      limits:
+        cpu: 2
+        memory: 2Gi
 
 """
     }
